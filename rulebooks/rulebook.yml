@@ -1,0 +1,25 @@
+---
+- name: Listen for SQS events
+  hosts: all
+  sources:
+    - ansible.eda.aws_sqs_queue:
+        region: "{{ aws_region }}"
+        access_key: "{{ aws_access_key_id }}"
+        secret_key: "{{ aws_secret_access_key }}"
+        name: "gateway-messages"
+        delay_seconds: 10
+
+  rules:
+
+    - name: Launch job template
+      condition: event.meta is defined
+      action:
+        run_job_template:
+          name: "{{ template_name }}"
+          organization: "{{ template_org }}"
+
+    - name: Debug any error events
+      condition: event.error is defined
+      action:
+        debug:
+          msg: "Error occurred: {{ event.error }}"

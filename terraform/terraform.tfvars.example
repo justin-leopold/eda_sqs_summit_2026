@@ -1,0 +1,36 @@
+# Example terraform.tfvars file
+# Copy this file to terraform.tfvars and customize as needed
+
+# AWS region where resources will be created
+aws_region = "us-west-2"
+
+# Project name used for resource naming
+project_name = "dce-api-gateway-sqs-poc"
+
+# SQS queue name
+sqs_queue_name = "dce-api-gateway-messages"
+
+# API Gateway name
+api_gateway_name = "dce-sqs-integration-api"
+
+# API resource path (will be available at /messages)
+api_resource_path = "messages"
+
+# API stage name
+api_stage_name = "prod"
+
+# CORS allowed origin — restrict to your AAP server if browser access is not needed
+# cors_allowed_origin = "https://your-aap-server.example.com"
+
+# Throttling — burst (concurrent requests) and rate (requests/second)
+# throttle_burst_limit = 100
+# throttle_rate_limit  = 50
+
+# Tags for all resources
+tags = {
+  Environment   = "poc"
+  Project       = "api-gateway-sqs-integration"
+  ManagedBy     = "terraform"
+  Organization  = "denver-city-county"
+  Department    = "technology-services"
+}

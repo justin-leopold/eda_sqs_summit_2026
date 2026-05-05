@@ -1,0 +1,101 @@
+# Author: justin
+# Purpose: .gitignore for Python, Terraform, and Ansible projects
+
+# Ansible
+artifact/*
+testing/*
+*code-workspace
+.ansible/*
+.claude
+.github/*
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.env
+*.venv
+env/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+.eggs/
+*.log
+*.sqlite3
+*.db
+*.cover
+.coverage
+htmlcov/
+.mypy_cache/
+.pytest_cache/
+.tox/
+.cache/
+pip-wheel-metadata/
+*.manifest
+*.spec
+*.bak
+.aws
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Virtualenv
+.env/
+.venv/
+env/
+venv/
+
+# VS Code
+.vscode/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+*.terraform/
+.terraform/
+terraform.tfvars
+terraform.tfvars.json
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+.terraform.lock.hcl
+
+# Ansible
+*.retry
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+inventory.ini
+host_vars/
+group_vars/
+vault.yml
+.vault_pass.txt
+.secret
+ansible.cfg
+roles/*/.molecule/
+roles/*/tests/output/
+.molecule/
+output/
+*.retry
+*.tar.gz
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor swap files
+*.swp
+*.swo
+*~
+
+# LibreOffice lock files
+.~lock.*#
+dce-ans-aap-aws_sqs_api_gw-poc.code-workspace

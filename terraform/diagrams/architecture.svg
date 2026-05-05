@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif">
+  <!-- ============================================================ -->
+  <!-- AWS API Gateway -> SQS -> Ansible AAP : Architecture Diagram -->
+  <!-- ============================================================ -->
+
+  <defs>
+    <!-- Arrowheads -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3F4B5C"/>
+    </marker>
+    <marker id="arrowMuted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8B95A3"/>
+    </marker>
+    <marker id="arrowAccent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#CC2E48"/>
+    </marker>
+
+    <!-- Drop shadow for service tiles -->
+    <filter id="tileShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1600" height="900" fill="#FAFBFD"/>
+
+  <!-- ====================== Title ====================== -->
+  <text x="800" y="62" text-anchor="middle" font-size="32" font-weight="700" fill="#1A2233">
+    API Gateway &#8594; SQS &#8594; Ansible Automation Platform
+  </text>
+  <text x="800" y="92" text-anchor="middle" font-size="16" fill="#6B7585">
+    Webhook intake pipeline provisioned by Terraform (REST API + IAM + SQS + DLQ)
+  </text>
+
+  <!-- ====================== AWS Cloud Boundary ====================== -->
+  <rect x="240" y="160" width="1100" height="640" rx="14" ry="14"
+        fill="#EFF6FB" stroke="#2563A6" stroke-width="2" stroke-dasharray="8,6"/>
+  <!-- AWS Cloud label badge -->
+  <g>
+    <rect x="260" y="148" width="150" height="28" rx="14" ry="14" fill="#FFFFFF" stroke="#2563A6" stroke-width="1.5"/>
+    <text x="335" y="167" text-anchor="middle" font-size="14" font-weight="700" fill="#1A4F8B">AWS Cloud</text>
+  </g>
+  <text x="1322" y="178" text-anchor="end" font-size="13" fill="#2563A6" font-style="italic">us-west-2 (default region)</text>
+
+  <!-- ====================== Helper: Service Tile pattern ====================== -->
+  <!-- Each "tile" is a colored rounded square with a small white glyph inside. -->
+
+  <!-- =========== 1. CLIENT (left, outside AWS Cloud) =========== -->
+  <g transform="translate(60, 400)">
+    <rect width="120" height="120" rx="14" ry="14" fill="#475569" filter="url(#tileShadow)"/>
+    <!-- glyph: cloud / globe -->
+    <g fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="60" cy="60" r="30"/>
+      <path d="M 30 60 Q 60 30 90 60"/>
+      <path d="M 30 60 Q 60 90 90 60"/>
+      <line x1="60" y1="30" x2="60" y2="90"/>
+    </g>
+    <text x="60" y="150" text-anchor="middle" font-size="16" font-weight="700" fill="#1A2233">Client</text>
+    <text x="60" y="170" text-anchor="middle" font-size="13" fill="#6B7585">Webhook / app / curl</text>
+  </g>
+
+  <!-- =========== 2. API GATEWAY =========== -->
+  <g transform="translate(360, 400)">
+    <rect width="120" height="120" rx="14" ry="14" fill="#A166FF" filter="url(#tileShadow)"/>
+    <!-- glyph: gateway (two arrows funneled) -->
+    <g fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 22 38 L 50 60 L 22 82"/>
+      <path d="M 98 38 L 70 60 L 98 82"/>
+      <line x1="50" y1="60" x2="70" y2="60"/>
+    </g>
+    <text x="60" y="150" text-anchor="middle" font-size="16" font-weight="700" fill="#1A2233">API Gateway</text>
+    <text x="60" y="170" text-anchor="middle" font-size="13" fill="#6B7585">REST &#8226; Regional</text>
+    <!-- Endpoint pill -->
+    <g transform="translate(-30, 195)">
+      <rect width="180" height="28" rx="14" ry="14" fill="#FFFFFF" stroke="#A166FF" stroke-width="1.5"/>
+      <text x="90" y="18" text-anchor="middle" font-size="13" font-weight="600" fill="#5E2BB8">POST /prod/messages</text>
+    </g>
+  </g>
+
+  <!-- =========== IAM ROLE BADGE (between API GW and SQS, above flow) =========== -->
+  <g transform="translate(640, 270)">
+    <rect width="100" height="100" rx="12" ry="12" fill="#DD344C" filter="url(#tileShadow)"/>
+    <!-- glyph: shield with key -->
+    <g fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 50 18 L 78 30 L 78 52 Q 78 76 50 86 Q 22 76 22 52 L 22 30 Z"/>
+      <circle cx="50" cy="48" r="7"/>
+      <line x1="50" y1="55" x2="50" y2="68"/>
+      <line x1="46" y1="62" x2="54" y2="62"/>
+    </g>
+    <text x="50" y="125" text-anchor="middle" font-size="14" font-weight="700" fill="#1A2233">IAM Role</text>
+  </g>
+  <!-- Dotted line connecting IAM role to API GW -> SQS arrow -->
+  <line x1="690" y1="385" x2="690" y2="455" stroke="#DD344C" stroke-width="1.5" stroke-dasharray="4,4"/>
+  <text x="755" y="412" font-size="12" fill="#DD344C" font-style="italic">assumed by API GW</text>
+
+  <!-- =========== 3. SQS MAIN QUEUE =========== -->
+  <g transform="translate(880, 400)">
+    <rect width="120" height="120" rx="14" ry="14" fill="#E7157B" filter="url(#tileShadow)"/>
+    <!-- glyph: stacked messages -->
+    <g fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="22" y="30" width="76" height="22" rx="3"/>
+      <rect x="22" y="56" width="76" height="22" rx="3"/>
+      <rect x="22" y="82" width="76" height="22" rx="3"/>
+      <line x1="32" y1="41" x2="60" y2="41"/>
+      <line x1="32" y1="67" x2="60" y2="67"/>
+      <line x1="32" y1="93" x2="60" y2="93"/>
+    </g>
+    <text x="60" y="150" text-anchor="middle" font-size="16" font-weight="700" fill="#1A2233">SQS</text>
+    <text x="60" y="170" text-anchor="middle" font-size="13" fill="#6B7585">Main Queue</text>
+    <text x="60" y="188" text-anchor="middle" font-size="11" fill="#8B95A3">14d retention &#8226; 30s visibility</text>
+  </g>
+
+  <!-- =========== 4. SQS DLQ (below main queue) =========== -->
+  <g transform="translate(880, 610)">
+    <rect width="120" height="120" rx="14" ry="14" fill="#8B3A52" filter="url(#tileShadow)"/>
+    <!-- glyph: stacked messages with X -->
+    <g fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="22" y="30" width="76" height="22" rx="3"/>
+      <rect x="22" y="56" width="76" height="22" rx="3"/>
+      <rect x="22" y="82" width="76" height="22" rx="3"/>
+      <line x1="74" y1="36" x2="94" y2="50"/>
+      <line x1="94" y1="36" x2="74" y2="50"/>
+    </g>
+    <text x="60" y="150" text-anchor="middle" font-size="14" font-weight="700" fill="#1A2233">Dead Letter Queue</text>
+    <text x="60" y="168" text-anchor="middle" font-size="12" fill="#6B7585">Failed message storage</text>
+  </g>
+
+  <!-- =========== 5. ANSIBLE AAP (right, outside AWS Cloud) =========== -->
+  <g transform="translate(1400, 400)">
+    <rect width="120" height="120" rx="14" ry="14" fill="#BB0000" filter="url(#tileShadow)"/>
+    <!-- glyph: stylized angular "A" (Ansible motif) -->
+    <g fill="none" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="32,90 60,28 88,90"/>
+      <line x1="50" y1="68" x2="76" y2="80"/>
+    </g>
+    <text x="60" y="150" text-anchor="middle" font-size="16" font-weight="700" fill="#1A2233">Ansible AAP</text>
+    <text x="60" y="170" text-anchor="middle" font-size="13" fill="#6B7585">Automation Platform</text>
+    <text x="60" y="188" text-anchor="middle" font-size="11" fill="#8B95A3">Polls SQS &#8594; runs jobs</text>
+  </g>
+
+  <!-- =========== ARROWS =========== -->
+
+  <!-- 1. Client -> API Gateway -->
+  <line x1="180" y1="460" x2="355" y2="460" stroke="#3F4B5C" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <g transform="translate(267, 440)">
+    <rect x="-50" y="-16" width="100" height="22" rx="11" fill="#FFFFFF" stroke="#3F4B5C" stroke-width="1"/>
+    <text x="0" y="0" text-anchor="middle" font-size="12" font-weight="600" fill="#3F4B5C">1. POST JSON</text>
+  </g>
+
+  <!-- 2. API Gateway -> SQS Main -->
+  <line x1="485" y1="460" x2="875" y2="460" stroke="#3F4B5C" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <g transform="translate(680, 484)">
+    <rect x="-95" y="-15" width="190" height="22" rx="11" fill="#FFFFFF" stroke="#3F4B5C" stroke-width="1"/>
+    <text x="0" y="1" text-anchor="middle" font-size="12" font-weight="600" fill="#3F4B5C">2. SendMessage (AWS integration)</text>
+  </g>
+
+  <!-- 3. SQS Main -> DLQ (downward redrive) -->
+  <line x1="940" y1="525" x2="940" y2="605" stroke="#CC2E48" stroke-width="2.5" marker-end="url(#arrowAccent)"/>
+  <g transform="translate(1090, 565)">
+    <rect x="-92" y="-15" width="184" height="22" rx="11" fill="#FFFFFF" stroke="#CC2E48" stroke-width="1"/>
+    <text x="0" y="1" text-anchor="middle" font-size="12" font-weight="600" fill="#CC2E48">3. Redrive after 3 failures</text>
+  </g>
+
+  <!-- 4. SQS Main -> Ansible AAP (out of AWS cloud) -->
+  <line x1="1005" y1="460" x2="1395" y2="460" stroke="#3F4B5C" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <g transform="translate(1200, 440)">
+    <rect x="-80" y="-16" width="160" height="22" rx="11" fill="#FFFFFF" stroke="#3F4B5C" stroke-width="1"/>
+    <text x="0" y="0" text-anchor="middle" font-size="12" font-weight="600" fill="#3F4B5C">4. Poll &amp; consume</text>
+  </g>
+
+  <!-- ====================== Legend / Footer ====================== -->
+  <g transform="translate(60, 820)">
+    <text x="0" y="0" font-size="13" font-weight="700" fill="#1A2233">Provisioned by Terraform:</text>
+    <g transform="translate(0, 18)" font-size="12" fill="#3F4B5C">
+      <circle cx="6" cy="6" r="5" fill="#A166FF"/>
+      <text x="18" y="10">aws_api_gateway_rest_api / _resource / _method / _integration / _stage</text>
+      <circle cx="6" cy="32" r="5" fill="#DD344C"/>
+      <text x="18" y="36">aws_iam_role + aws_iam_policy (apigateway.amazonaws.com &#8594; sqs:SendMessage)</text>
+      <circle cx="6" cy="58" r="5" fill="#E7157B"/>
+      <text x="18" y="62">aws_sqs_queue (main) + aws_sqs_queue_redrive_policy + aws_sqs_queue (DLQ)</text>
+    </g>
+  </g>
+
+  <!-- Bottom-right caption -->
+  <text x="1540" y="868" text-anchor="end" font-size="11" fill="#8B95A3" font-style="italic">
+    Source: terraform/main.tf
+  </text>
+</svg>

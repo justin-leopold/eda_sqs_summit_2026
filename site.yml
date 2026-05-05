@@ -1,0 +1,27 @@
+- name: Send Teams message that a new form response has been submitted
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - '/vault/ansible_AD_user.yml'
+  vars:
+    # Teams Notification
+    teams_notification_team: 'TS - Ansible'
+    teams_notification_channel: 'Ansible Tower Messages'
+
+  tasks:
+    - name: Debug - Print parsed payload
+      ansible.builtin.debug:
+        msg:
+          - "Payload {{ ansible_eda.event | to_nice_json }}"
+
+    - name: Send notification of new response to Teams
+      ansible.builtin.include_role:
+        name: ccd.master_roles.teams_send_message_to_channel
+        public: true
+      vars:
+        smtc_team: "{{ teams_notification_team }}"
+        smtc_channel: "{{ teams_notification_channel }}"
+        smtc_message: |
+          <center><h2>📋 New Form Submission Received</h2></center>
+          <p><strong>{{ ansible_eda.event.body.SendFields.name.value }}</strong> from <strong>{{ ansible_eda.event.body.SendFields.location.value }}</strong> has submitted a new form response.</p>
+          <p><em>Form ID: {{ ansible_eda.event.body.FormId }} &nbsp;|&nbsp; Reference: {{ ansible_eda.event.body.ResponseReferenceId }}</em></p>
