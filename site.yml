@@ -2,11 +2,11 @@
   hosts: localhost
   gather_facts: false
   vars_files:
-    - '/vault/ansible_AD_user.yml'
+    - '/vault/ansible.yml'
   vars:
     # Teams Notification
-    teams_notification_team: 'TS - Ansible'
-    teams_notification_channel: 'Ansible Tower Messages'
+    teams_notification_team: 'Ansible'
+    teams_notification_channel: 'Ansible Messages'
 
   tasks:
     - name: Debug - Print parsed payload
